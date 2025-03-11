@@ -11,7 +11,7 @@ while IFS= read -r fullpath; do
         found_non_damaged=false
         while IFS= read -r file; do
             # Check if the file is NOT in damaged_headers.txt
-            if [[ "$file" == *.fil ]] && ! grep -Fxq "$(basename "$file")" "$INPUT_FILE"; then
+            if [[ "$file" == *.fil ]] && ! grep -Fxq "$file" "$INPUT_FILE"; then
                 echo "$file" >> replacement_headers.txt
                 found_non_damaged=true
                 break
