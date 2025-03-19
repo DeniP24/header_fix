@@ -1,7 +1,7 @@
 #!/bin/bash
 
-INPUT_FILE="1damaged_headers.txt_all"
-DAMAGED_FILE="1damaged_headers.txt_all"
+INPUT_FILE="damaged_headers.txt"
+DAMAGED_FILE="damaged_headers.txt"
 
 while IFS= read -r fullpath; do
     dir_path=$(dirname "$fullpath")
@@ -21,6 +21,7 @@ while IFS= read -r fullpath; do
         # If no non-damaged file was found, indicate that
         if ! $found_non_damaged; then
             echo "All files in $dir_path are in damaged"
+            echo "No file found..." >> replacement_headers.txt
         fi
 
     else

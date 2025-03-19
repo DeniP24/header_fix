@@ -4,12 +4,12 @@ import re
 import glob
 
 def main():
-    damaged_headers_file = "1damaged_headers.txt_all" #read damaged file
+    damaged_headers_file = "damaged_headers.txt" #read damaged file
     
     subfolder_paths = [] #read tstamp groups file
     tstamps = []
     cfbfs = []
-    with open("2subfolder_tstamp_groups.csv", 'r') as file:
+    with open("subfolder_tstamp_groups.csv", 'r') as file:
         next(file)
         for line in file:
             # Split on `", "` to separate fields (path, timestamps, cfbfs)
@@ -38,15 +38,16 @@ def main():
                 tstamps_in_folder.extend(timestamps)
                 names_in_folder.append(os.path.basename(filfile).split('_')[2].split('.')[0])
                 our_fil_name = os.path.basename(line).split('_')[2].split('.')[0]
-
             #This finds the tstamp groups in the 3formatted.txt file
             for path, timestamps, cfbfs in combined_data:
-                if path == cfbf_folder_path+"/":
+                normalized_path = os.path.normpath(path)
+                normalized_cfbf_folder_path = os.path.normpath(cfbf_folder_path)
+                if normalized_path == normalized_cfbf_folder_path:
                     count = 0 
                     for i in range(len(timestamps)):
                         if round(timestamps[i],12) in tstamps_in_folder:
                             count+=1
-                    if count>=3:
+                    if count>=1:
                         print("Our replacement timestamps should be:")
                         print(our_fil_name, names_in_folder)
                         zipped_ = list(zip(names_in_folder,tstamps_in_folder))
@@ -58,7 +59,8 @@ def main():
                         print("The timestamp we should use is:" +str(ordered[index]))
                         # Write output line to file here!
                         with open("4tstamps.txt", 'a') as out_file:
-                            out_file.write("{0:.15f}\n".format(ordered[index]))  # Using .format() to write with 15 decimal places
+                            out_file.write("{}{}\t{:.15f}\n".format(normalized_path, line, ordered[index]))
+ # Using .format() to write with 15 decimal places
                             
 if __name__ == "__main__":
     main()

@@ -4,13 +4,14 @@
 # Define the path to the singularity image
 singularity_cmd="singularity exec -B /beegfs:/beegfs /homes/vishnu/singularity_images/trapum_pulsarx_fold_docker_20220411.sif"
 
-root_base_dir="/beegfs/DATA/TRAPUM/SCI-20200703-MK-03/20230910-0024"
+#root_base_dir="/beegfs/DATA/TRAPUM/SCI-20200703-MK-03/20230910-0024"
+root_base_dir="/beegfs/DATA/TRAPUM/SCI-20230907-DP-01/"
 output_file="subfolder_tstamp_groups.csv"
 
 > "$output_file"
 echo "Subfolder Path,Tstamps,Cfbfs" >> "$output_file"
 
-for subfolder in "$root_base_dir"/*/; do
+for subfolder in "$root_base_dir"/*/*/; do
     if [[ -d "$subfolder" ]]; then
         echo "Scanning subfolder: $subfolder"
         
